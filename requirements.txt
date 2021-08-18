@@ -1,0 +1,6 @@
+tatsu
+regex
+colorama
+pygraphviz
+click
+sphinx
