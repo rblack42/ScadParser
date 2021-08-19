@@ -1,18 +1,17 @@
-.PHONY: venv
-venv:
+MK := mk
+PROJECT := scadparser
+
+.PHONY: dirvenv
+dirvenv:
 	echo 'layout python3' > .envrc &&\
 		direnv allow
 
-.PHONY: reqs
-reqs:
-	pip install --upgrade pip
-	pip install -r requirements.txt
+-include $(MK)/help.mk
+-include $(MK)/python.mk
+-include $(MK)/pypi.mk
+-include $(MK)/version.mk
+-include $(MK)/sphinx.mk
 
-.PHONY: docs
-docs:
-	cd rst && \
-		sphinx-build -b html -d _build/doctrees . ../docs
-
-.PHONY: test
-	python -m pytst tests
-
+.PHONY: run
+run:
+	python -m $(PROJECT)

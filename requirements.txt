@@ -4,3 +4,6 @@ colorama
 pygraphviz
 click
 sphinx
+pytest
+pytest-cov
+coverage

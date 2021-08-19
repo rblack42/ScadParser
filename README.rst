@@ -63,11 +63,19 @@ ScadParser (v0.1.1)
     :target: https://github.com/rblack42/ScadParser/compare/v0.1.1...master
 .. end-badges
 
-This project supports the *Math-Magik* project which uses *OpenSCAD* to design model airplanes. The purpose of the parser developed here is to process the *OpenSCAD* design files in order to facilitate performing an analysis n the proposed design. Specifically, that processing seeks to predict the estimated weight and center of gravity of the model, two parameters that are important in getting a model to actually fly!
+This project supports the *Math-Magik* project which uses *OpenSCAD* to design
+model airplanes. The purpose of the parser developed here is to process the
+*OpenSCAD* design files in order to facilitate performing an analysis on the
+proposed design. Specifically, that processing seeks to predict the estimated
+weight and center of gravity of the model, two parameters that are important in
+getting a model to actually fly!
 
-The initial goal of this project is not necessarily to be a complete parser for all kinds of *OpenSCAD* code. Rather, it focuses on the kind of code used in *Math-Magik* projects.
+The initial goal of this project is not necessarily to be a complete parser for
+all kinds of *OpenSCAD* code. Rather, it focuses on the kind of code used in
+*Math-Magik* projects.
 
-More details on the parent project can be found at https://rblack42.github.io/math-magik
+More details on the parent project can be found at
+https://rblack42.github.io/math-magik
 
 If you are interested in assisting with the development of this project, or
 need help with anything found here, please contact me by email. I welcome
