@@ -1,0 +1,17 @@
+dist: focal
+
+language: python
+
+python:
+  - "3.9"
+
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - sudo apt-get update
+
+script:
+    python -m pytest
+
+after_success:
+  - coveralls
