@@ -2,7 +2,6 @@
 include = scadparser/*
 omit = *test_*
 branch = True
-debug=trace
 
 [report]
 exclude_lines =

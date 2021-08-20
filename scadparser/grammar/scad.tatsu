@@ -1,0 +1,132 @@
+@@grammar::SCAD
+@@eol_comments :: /\/\/.*?$/
+
+@@keyword :: include use
+
+
+start
+	=
+	program $
+	;
+
+program
+	=
+	[ includelist ]
+	stmtlist
+	;
+
+includelist
+	=
+	{ @:include }
+	;
+
+include
+	=
+	'include' '<' file:filename '>'
+	;
+
+stmtlist
+	=
+	{ @:statement}+
+	;
+
+statement
+	=
+	declaration
+	;
+
+declaration
+	=
+	id:ident
+	'='
+	value:expression
+	';'
+	;
+
+expression
+	=
+    | addition
+    | subtraction
+	| term
+	;
+
+addition
+    =
+	left:expression op:'+' ~ right:term
+    ;
+
+subtraction
+    =
+	left:expression op:'-' ~ right:term
+    ;
+
+term
+	=
+    | multiplication
+    | division
+	| factor
+	;
+
+multiplication
+    =
+	left:term op:'*' ~ right:factor
+    ;
+
+division
+    =
+	left:term op:'/' ~ right:factor
+    ;
+
+factor
+	=
+	| '(' ~ expression ')'
+	| number
+    | boolean
+    | vector
+	| ident
+	;
+
+number
+	=
+	| fract
+	| int
+	;
+
+int
+	=
+	/\d+/
+	;
+
+fract
+	=
+	/\d+\.\d+/
+	;
+
+boolean
+    =
+    | 'true'
+    | 'false'
+    ;
+
+vector
+    =
+    '['
+    exprlist
+    ']'
+    ;
+
+exprlist
+    =
+    ','%{ @:expression }
+    ;
+
+@name
+ident
+	=
+	/[_a-zA-z][_a-zA-Z0-9]+/
+	;
+
+filename
+	=
+	/[^>]+/
+	;

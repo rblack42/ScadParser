@@ -11,7 +11,3 @@ dirvenv:
 -include $(MK)/pypi.mk
 -include $(MK)/version.mk
 -include $(MK)/sphinx.mk
-
-.PHONY: run
-run:
-	python -m $(PROJECT)

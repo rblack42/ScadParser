@@ -17,11 +17,11 @@ ScadParser (v0.1.1)
 
 
 
-.. |github| image:: https://github.com/rblack42/Rscadparser/actions/workflows/python-app.yml/badge.svg
+.. |github| image:: https://github.com/rblack42/ScadParser/actions/workflows/python-app.yml/badge.svg
     :alt: Github Workflows
     :target: https://github.com/rblack42/ScadParser
 
-.. |travis| image:: https://travis-ci.com/rblack42/RScadParser.svg?branch=master
+.. |travis| image:: https://travis-ci.com/rblack42/ScadParser.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.com/rblack42/math-magik
 
