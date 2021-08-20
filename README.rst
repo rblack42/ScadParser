@@ -25,7 +25,7 @@ ScadParser (v0.1.1)
     :alt: Travis-CI Build Status
     :target: https://travis-ci.com/rblack42/math-magik
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/pevivsa6n5adw5lw?svg=true
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/ltkmrpguu4uof7jq?svg=true
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/rblack42/ScadParser
 
