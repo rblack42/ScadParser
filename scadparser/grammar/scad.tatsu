@@ -29,7 +29,7 @@ stmtlist
 	=
 	{ @:statement}+
 	;
-
++
 statement
 	=
 	declaration

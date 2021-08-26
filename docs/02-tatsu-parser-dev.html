@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>TatSu Parser Development &#8212; Math Magik 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinx13.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx13.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Parsing Expressions" href="03-parsing-expressions.html" />
+    <link rel="prev" title="Building a Parser for OpenSCAD" href="01-building-a-parser-for-osc.html" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script>
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="usage/installation.html">Get it</a></li>
+    <li><a href="contents.html">Docs</a></li>
+    <li><a href="develop.html">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="index.html">
+      <img src="_static/logo.png" alt="PyLiT" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="03-parsing-expressions.html" title="Parsing Expressions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01-building-a-parser-for-osc.html" title="Building a Parser for OpenSCAD"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Home</a>&#160;|</li>
+        <li><a href="contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">TatSu Parser Development</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="contents.html">
+              <img class="logo" src="_static/badge.svg" alt="Logo"/>
+            </a></p>
+  <h3><a href="contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TatSu Parser Development</a><ul>
+<li><a class="reference internal" href="#pytest-testing">PyTest Testing</a></li>
+<li><a class="reference internal" href="#adding-real-numbers">Adding Real Numbers</a></li>
+<li><a class="reference internal" href="#identifiers">Identifiers</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="01-building-a-parser-for-osc.html"
+                        title="previous chapter">Building a Parser for <em>OpenSCAD</em></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="03-parsing-expressions.html"
+                        title="next chapter">Parsing Expressions</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/02-tatsu-parser-dev.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>Read time: 4.9 minutes (494 words)</p>
+<section id="tatsu-parser-development">
+<h1>TatSu Parser Development<a class="headerlink" href="#tatsu-parser-development" title="Permalink to this headline">¶</a></h1>
+<p>To generate a parser for the <em>OpenSCAD</em> language using <a class="reference external" href="https://tatsu.readthedocs.io/en/stable/index.html">TatSu</a>, we need to start off
+by writing a language specification using a variation of <a class="reference external" href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a>.</p>
+<p>Here is our starting point:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">scad.ebnf</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>@@grammar :: scad
+<span class="linenos"> 2</span>@@comments ::	/\/\*.*\*\//
+<span class="linenos"> 3</span>@@eol_comments ::	/\/\/.*/
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>integer
+<span class="linenos"> 6</span>	=
+<span class="linenos"> 7</span>	/[-]?\d+([eE]-?\d+)?/
+<span class="linenos"> 8</span>	;
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>
+</pre></div>
+</div>
+</div>
+<p>Here, we define a name for the language <em>grammar</em>, and set up the geberated
+parser to allow (and skip) C++ style comments. The only rule found in this
+startup file defines an integer number as a sequence of digits, possibly
+allowing for an exponent using the scientific stype notation. The pattenr shown
+here is a standard one using <em>regular expressions</em> in <em>Python</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to assist in producing this documentation, I am numbering versions
+of the ebnf- we produce and use in tests. In normal application
+development, we simple add lines to a single 88scad.ebnf fle and ditch the
+numbers.</p>
+</div>
+<p>Here is a simple test showing how we use this grammar and generate a parser for our extremely simple language:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">sandbox/step01.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">tatsu</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="linenos"> 6</span>    <span class="n">g</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;scadparser/ebnf/scad01.ebnf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos"> 7</span>    <span class="n">parser</span> <span class="o">=</span> <span class="n">tatsu</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="linenos"> 8</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">)</span>
+<span class="linenos"> 9</span>    <span class="n">pprint</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">12</span>    <span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>I created a <strong>sandbox</strong> directory in this project just for simple tests</p>
+</div>
+<p>Let’s run this and see what we get:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python sandbox/step01.py
+&#39;123&#39;
+</pre></div>
+</div>
+<p>The output of this run is a simple string, which is the “code” we passed to the
+parser. Looks like it worked.</p>
+<section id="pytest-testing">
+<h2>PyTest Testing<a class="headerlink" href="#pytest-testing" title="Permalink to this headline">¶</a></h2>
+<p>With a working parser, we really should test it more extensively. For that, we
+will use <a class="reference external" href="https://docs.pytest.org/en/6.2.x/">PyTest</a>.</p>
+<p>Here is a test that uses a feature of <a class="reference external" href="https://docs.pytest.org/en/6.2.x/">PyTest</a> that <strong>parametrizes</strong> (yes it is
+misspelled) a test. Also, I created a <strong>scad.ebnf</strong> file which will be our real
+<em>OpenSCAD</em> language specification.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">tests/test_integers.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;t,e&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="linenos"> 4</span>    <span class="p">(</span><span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="s2">&quot;123&quot;</span><span class="p">),</span>
+<span class="linenos"> 5</span>    <span class="p">(</span><span class="s1">&#39;-123&#39;</span><span class="p">,</span> <span class="s2">&quot;-123&quot;</span><span class="p">),</span>
+<span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;123e02&#39;</span><span class="p">,</span> <span class="s2">&quot;123e02&quot;</span><span class="p">),</span>
+<span class="linenos"> 7</span>    <span class="p">(</span><span class="s1">&#39;123e-2&#39;</span><span class="p">,</span> <span class="s2">&quot;123e-2&quot;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="p">])</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos">10</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;integer&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<p>In this test, the <strong>t</strong> and <strong>e</strong> parameters mean “string to test”, and
+“expected result” respectively. <a class="reference external" href="https://docs.pytest.org/en/6.2.x/">PyTest</a> uses the list of string pairs to run
+the test multiple times, once for each pair. This let’s you create several
+tests in a simple way. The <strong>start</strong> parameter tells the parser what rule in
+the specification grammar to use to begin processing.</p>
+<p>This test also relies on a setup file that creates a parser for each test:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">tests/conftest.py</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">tatsu</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">GRAMMAR</span> <span class="o">=</span> <span class="s2">&quot;scadparser/ebnf/scad.ebnf&quot;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">scadparser</span><span class="p">():</span>
+<span class="linenos">10</span>    <span class="n">g</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos">11</span>    <span class="k">try</span><span class="p">:</span>
+<span class="linenos">12</span>        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">GRAMMAR</span><span class="p">)</span>
+<span class="linenos">13</span>    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+<span class="linenos">14</span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grammar file cannot be opened:&quot;</span><span class="p">,</span> <span class="n">GRAMMAR</span><span class="p">)</span>
+<span class="linenos">15</span>        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos">16</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">17</span>        <span class="k">with</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos">18</span>            <span class="n">g</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos">19</span>    <span class="n">model</span> <span class="o">=</span> <span class="n">tatsu</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="linenos">20</span>    <span class="k">yield</span> <span class="n">model</span>
+<span class="linenos">21</span>
+</pre></div>
+</div>
+</div>
+<p>The parser is passed to the test function as the first parameter.</p>
+<p>Let’s see if this works:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ pytest tests/test_integers.py
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- /Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/bin/python3.9
+cachedir: .pytest_cache
+rootdir: /Users/rblack/_dev/ScadParser, configfile: pytest.ini
+plugins: cov-2.12.1
+collecting ... collected 4 items
+
+tests/test_integers.py::test_number[123-123] PASSED                      [ 25%]
+tests/test_integers.py::test_number[-123--123] PASSED                    [ 50%]
+tests/test_integers.py::test_number[123e02-123e02] PASSED                [ 75%]
+tests/test_integers.py::test_number[123e-2-123e-2] PASSED                [100%]Coverage.py warning: No data was collected. (no-data-collected)
+/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/pytest_cov/plugin.py:271: PytestWarning: Failed to generate report: No data to report.
+
+  self.cov_controller.finish()
+WARNING: Failed to generate report: No data to report.
+
+
+
+---------- coverage: platform darwin, python 3.9.6-final-0 -----------
+
+
+============================== 4 passed in 0.37s ===============================
+</pre></div>
+</div>
+<p>Now, we have a much better testing setup, which we will use as we proceed</p>
+</section>
+<section id="adding-real-numbers">
+<h2>Adding Real Numbers<a class="headerlink" href="#adding-real-numbers" title="Permalink to this headline">¶</a></h2>
+<p>Now that we can process integers, let’s add a rul that accepts real numbers as
+well. This one is similar to the 8integer8 rule, bu it allows a decimal point;</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">scadparser/ebnf/scad02.ebnf</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>@@grammar :: scad
+<span class="linenos"> 2</span>@@comments ::	/\/\*.*\*\//
+<span class="linenos"> 3</span>@@eol_comments ::	/\/\/.*/
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>integer
+<span class="linenos"> 6</span>	=
+<span class="linenos"> 7</span>	/[-]?\d+([eE]-?\d+)?/
+<span class="linenos"> 8</span>	;
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>real
+<span class="linenos">11</span>	=
+<span class="linenos">12</span>	/[-]?[0-9]*[\.][0-9]+([eE]-?[0-9]+)?/
+<span class="linenos">13</span>	;
+</pre></div>
+</div>
+</div>
+<p>Instead of building another test code, we will just add a new test:</p>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">tests/test_reals.py</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;t,e&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="linenos"> 4</span>    <span class="p">(</span><span class="s1">&#39;123.45&#39;</span><span class="p">,</span> <span class="s2">&quot;123.45&quot;</span><span class="p">),</span>
+<span class="linenos"> 5</span>    <span class="p">(</span><span class="s1">&#39;-123.0&#39;</span><span class="p">,</span> <span class="s2">&quot;-123.0&quot;</span><span class="p">),</span>
+<span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;123.45e02&#39;</span><span class="p">,</span> <span class="s2">&quot;123.45e02&quot;</span><span class="p">),</span>
+<span class="linenos"> 7</span>    <span class="p">(</span><span class="s1">&#39;123.0e-2&#39;</span><span class="p">,</span> <span class="s2">&quot;123.0e-2&quot;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="p">])</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos">10</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;real&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can run this test as well:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ pytest tests/test_reals.py
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- /Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/bin/python3.9
+cachedir: .pytest_cache
+rootdir: /Users/rblack/_dev/ScadParser, configfile: pytest.ini
+plugins: cov-2.12.1
+collecting ... collected 4 items
+
+tests/test_reals.py::test_number[123.45-123.45] PASSED                   [ 25%]
+tests/test_reals.py::test_number[-123.0--123.0] PASSED                   [ 50%]
+tests/test_reals.py::test_number[123.45e02-123.45e02] PASSED             [ 75%]
+tests/test_reals.py::test_number[123.0e-2-123.0e-2] PASSED               [100%]Coverage.py warning: No data was collected. (no-data-collected)
+/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/pytest_cov/plugin.py:271: PytestWarning: Failed to generate report: No data to report.
+
+  self.cov_controller.finish()
+WARNING: Failed to generate report: No data to report.
+
+
+
+---------- coverage: platform darwin, python 3.9.6-final-0 -----------
+
+
+============================== 4 passed in 0.37s ===============================
+</pre></div>
+</div>
+<p>Looks like we are making progress.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In normal development, running pytest will run all tests found in the
+<strong>test</strong> directory. I am limiting the test run to just a sngle test for
+this documentation.</p>
+</div>
+</section>
+<section id="identifiers">
+<h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h2>
+<p>We will be naming things in our design work, and <em>OpenSCAD</em> has some rules on names.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span>
+    <span class="o">=</span>
+    <span class="o">|</span> <span class="nb">float</span><span class="p">:</span><span class="n">real</span>
+    <span class="o">|</span> <span class="nb">int</span><span class="p">:</span><span class="n">integer</span>
+</pre></div>
+</div>
+<p>This new rule allows names that start with a dollar sign, but those names are reserved for internal work by <em>OpenSCAD</em>. Some strange names are allowed as well, as we will see in our next test code:</p>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">tests/test_identifiers.py</span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s1">&#39;t,e&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="linenos"> 4</span>    <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">),</span>
+<span class="linenos"> 5</span>    <span class="p">(</span><span class="s1">&#39;_0&#39;</span><span class="p">,</span> <span class="s2">&quot;_0&quot;</span><span class="p">),</span>
+<span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;max_span&#39;</span><span class="p">,</span> <span class="s2">&quot;max_span&quot;</span><span class="p">),</span>
+<span class="linenos"> 7</span><span class="p">])</span>
+<span class="linenos"> 8</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos"> 9</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;identifier&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
+</pre></div>
+</div>
+</div>
+<p>I am going to omit the test run (it works!)</p>
+<p>w that we have a start on our parser, let’s move on to something more interesting: <em>expressions</em>!</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="03-parsing-expressions.html" title="Parsing Expressions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01-building-a-parser-for-osc.html" title="Building a Parser for OpenSCAD"
+             >previous</a> |</li>
+        <li><a href="index.html">Home</a>&#160;|</li>
+        <li><a href="contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">TatSu Parser Development</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Roie R. Black.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+  </body>
+</html>

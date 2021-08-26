@@ -1,0 +1,7 @@
+* 2021-08-20: added travis-ci testing
+* 2021-08-20: removed pygraphviz dependency
+* 2021-08-20: added appveyor testing
+* 2021-08-20: added basic parsing for data files
+* 2021-08-19: added graphviz install to testing workflow
+* 2021-08-19: initial test setup
+* 2021-08-18: initial commit

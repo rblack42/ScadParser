@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Building a Parser for OpenSCAD &#8212; Math Magik 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinx13.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx13.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="TatSu Parser Development" href="02-tatsu-parser-dev.html" />
+    <link rel="prev" title="Math-Magik SCAD Parser" href="contents.html" />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script>
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="usage/installation.html">Get it</a></li>
+    <li><a href="contents.html">Docs</a></li>
+    <li><a href="develop.html">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="index.html">
+      <img src="_static/logo.png" alt="PyLiT" />
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="02-tatsu-parser-dev.html" title="TatSu Parser Development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="contents.html" title="Math-Magik SCAD Parser"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Home</a>&#160;|</li>
+        <li><a href="contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Building a Parser for <em>OpenSCAD</em></a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="contents.html">
+              <img class="logo" src="_static/badge.svg" alt="Logo"/>
+            </a></p>
+  <h3><a href="contents.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building a Parser for <em>OpenSCAD</em></a><ul>
+<li><a class="reference internal" href="#parser-coding-techniques">Parser Coding Techniques</a><ul>
+<li><a class="reference internal" href="#language-specification">Language Specification</a></li>
+<li><a class="reference internal" href="#ebnf-in-ebnf">EBNF in EBNF</a></li>
+<li><a class="reference internal" href="#railroad-diagrams">Railroad Diagrams</a><ul>
+<li><a class="reference internal" href="#lines">Lines</a></li>
+<li><a class="reference internal" href="#literals-terminals">Literals (Terminals)</a></li>
+<li><a class="reference internal" href="#nonterminals">Nonterminals</a></li>
+<li><a class="reference internal" href="#alternatives">Alternatives</a></li>
+<li><a class="reference internal" href="#repetition">Repetition</a></li>
+<li><a class="reference internal" href="#optional-things">Optional Things</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parser-generators">Parser Generators</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="contents.html"
+                        title="previous chapter">Math-Magik SCAD Parser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="02-tatsu-parser-dev.html"
+                        title="next chapter">TatSu Parser Development</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/01-building-a-parser-for-osc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>Read time: 7.1 minutes (707 words)</p>
+<section id="building-a-parser-for-osc">
+<h1>Building a Parser for <em>OpenSCAD</em><a class="headerlink" href="#building-a-parser-for-osc" title="Permalink to this headline">¶</a></h1>
+<p>Part of my <em>Math-Magik</em> project involves analyzing a 3D model airplane design created
+using <em>OpenSCAD</em>. This analysis requires extracting details about where various
+entities end up being placed in the design in order to figure out things like
+predicted weights and center-of gravity locations. Unfortunately, <em>OpenSCAD</em> does
+not provide access to the information needed, but it is defined in the code you
+write to create the model.</p>
+<p>That means I need to read the <em>OpenSCAD</em> code and extract the information I need.
+Like any good programmer, I am not going to do that by hand!</p>
+<p>Time to write a parser for <em>OpenSCAD</em>!</p>
+<section id="parser-coding-techniques">
+<h2>Parser Coding Techniques<a class="headerlink" href="#parser-coding-techniques" title="Permalink to this headline">¶</a></h2>
+<p>In my early career, I taught a course in compiler design at the <em>Air Force Institute of Technology</em>, the
+USAF Graduate School. At that time, compilers were largely written by hand, and
+in a first course on building compilers, we typically wrote our own code
+completely from scratch. One of the most interesting guides on doing this was
+written by Niklaus Wirth in his 1976 book “Algorithms + Data Structures = Programs”.</p>
+<p>In that book, Wirth outlined building a simple <em>Recursive Descent</em> parser. This
+scheme relies on a formal specification of the language you want to process,
+then taking that specification and morphig it into code in a fairly simple
+manner. Wirth presented both a compiler and an early <em>virtual machine</em> for a
+simple language he called <strong>PL0</strong>.</p>
+<section id="language-specification">
+<h3>Language Specification<a class="headerlink" href="#language-specification" title="Permalink to this headline">¶</a></h3>
+<p>Wirth used something called <em>Extended Bakus-Naur Form</em> to define a language. This specification
+defines a set og <em>Tokens</em> which are textual chunks of a program we need to
+identify (think words in English) and punctuation we will be using, then
+creates <em>Syntax Rules</em> that specify how these <em>tokens</em> can legally be arranged.
+These rules are similar to the grammar rules you probably learned in your early
+school days.</p>
+<p>The <em>EBNF</em> notation is pretty simple. Here is the specification of that
+language, written in that language!</p>
+</section>
+<section id="ebnf-in-ebnf">
+<h3>EBNF in EBNF<a class="headerlink" href="#ebnf-in-ebnf" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>letter = &quot;A&quot; | &quot;B&quot; | &quot;C&quot; | &quot;D&quot; | &quot;E&quot; | &quot;F&quot; | &quot;G&quot;
+   | &quot;H&quot; | &quot;I&quot; | &quot;J&quot; | &quot;K&quot; | &quot;L&quot; | &quot;M&quot; | &quot;N&quot;
+   | &quot;O&quot; | &quot;P&quot; | &quot;Q&quot; | &quot;R&quot; | &quot;S&quot; | &quot;T&quot; | &quot;U&quot;
+   | &quot;V&quot; | &quot;W&quot; | &quot;X&quot; | &quot;Y&quot; | &quot;Z&quot; | &quot;a&quot; | &quot;b&quot;
+   | &quot;c&quot; | &quot;d&quot; | &quot;e&quot; | &quot;f&quot; | &quot;g&quot; | &quot;h&quot; | &quot;i&quot;
+   | &quot;j&quot; | &quot;k&quot; | &quot;l&quot; | &quot;m&quot; | &quot;n&quot; | &quot;o&quot; | &quot;p&quot;
+   | &quot;q&quot; | &quot;r&quot; | &quot;s&quot; | &quot;t&quot; | &quot;u&quot; | &quot;v&quot; | &quot;w&quot;
+   | &quot;x&quot; | &quot;y&quot; | &quot;z&quot; ;
+
+digit = &quot;0&quot; | &quot;1&quot; | &quot;2&quot; | &quot;3&quot; | &quot;4&quot; | &quot;5&quot; | &quot;6&quot; | &quot;7&quot; | &quot;8&quot; | &quot;9&quot; ;
+
+symbol = &quot;[&quot; | &quot;]&quot; | &quot;{&quot; | &quot;}&quot; | &quot;(&quot; | &quot;)&quot; | &quot;&lt;&quot; | &quot;&gt;&quot;
+   | &quot;&#39;&quot; | &#39;&quot;&#39; | &quot;=&quot; | &quot;|&quot; | &quot;.&quot; | &quot;,&quot; | &quot;;&quot; ;
+
+   character = letter | digit | symbol | &quot;_&quot; ;
+
+
+   identifier = letter , { letter | digit | &quot;_&quot; } ;
+
+   terminal = &quot;&#39;&quot; , character , { character } , &quot;&#39;&quot;
+     | &#39;&quot;&#39; , character , { character } , &#39;&quot;&#39; ;
+
+lhs = identifier ;
+
+rhs = identifier
+    | terminal
+    | &quot;[&quot; , rhs , &quot;]&quot;
+    | &quot;{&quot; , rhs , &quot;}&quot;
+    | &quot;(&quot; , rhs , &quot;)&quot;
+    | rhs , &quot;|&quot; , rhs
+    | rhs , &quot;,&quot; , rhs ;
+
+
+ rule = lhs , &quot;=&quot; , rhs , &quot;;&quot; ;
+
+ grammar = { rule } ;
+</pre></div>
+</div>
+<p>In this notation, these symbols are used:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Notation</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>=</p></td>
+<td><p>definition</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;comma&gt;</p></td>
+<td><p>concatenation</p></td>
+</tr>
+<tr class="row-even"><td><p>;</p></td>
+<td><p>termination</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘|’</p></td>
+<td><p>alternation</p></td>
+</tr>
+<tr class="row-even"><td><p>[ …]</p></td>
+<td><p>optional</p></td>
+</tr>
+<tr class="row-odd"><td><p>{ … }</p></td>
+<td><p>repetition</p></td>
+</tr>
+<tr class="row-even"><td><p>( … )</p></td>
+<td><p>grouping</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘” … “’</p></td>
+<td><p>terminal string</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="railroad-diagrams">
+<h3>Railroad Diagrams<a class="headerlink" href="#railroad-diagrams" title="Permalink to this headline">¶</a></h3>
+<p>Wirth also demonstrated how to visualize the rules defined using <a class="reference external" href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> using
+something called <em>railroad diagrams</em>. These diagrams, which remind you of toy
+rain layouts you might have played with as a kid, use a few simple conventions.</p>
+<p>All diagrams have a single point of entry, and a single point of exit. They also
+nave names.</p>
+<section id="lines">
+<h4>Lines<a class="headerlink" href="#lines" title="Permalink to this headline">¶</a></h4>
+<p>Lines show how you proceed in examining a chunk of code.  Typically, we “slide”
+over any white space (tabs and spaces) or newlines in this checking.</p>
+</section>
+<section id="literals-terminals">
+<h4>Literals (Terminals)<a class="headerlink" href="#literals-terminals" title="Permalink to this headline">¶</a></h4>
+<p>If you run into a box with rounded corners, you expect to see exactly the text
+shown inside that box.</p>
+<div class="rail">
+<p><img src="_images/rail/1513a486a0de7c9cd1de22b83dba355621587bef.png"/><p>
+</div></section>
+<section id="nonterminals">
+<h4>Nonterminals<a class="headerlink" href="#nonterminals" title="Permalink to this headline">¶</a></h4>
+<p>If you run into a box with square corners, the text inside names another rule. You find the diagram for that rule and continue on until you reach the end. Then you return to the exit of the current box. This is like l picking up your locomotive and putting it on another piece of track, then returning it later.</p>
+<div class="rail">
+<p><img src="_images/rail/af37e27f92807204b4e1832f7f912c83bd8a3613.png"/><p>
+</div></section>
+<section id="alternatives">
+<h4>Alternatives<a class="headerlink" href="#alternatives" title="Permalink to this headline">¶</a></h4>
+<p>An <em>alternative</em> indicates that you can see one or more of the defines things.
+This is indicated in the diagram using a switch-like branch in the line. Here
+is an example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A | B
+</pre></div>
+</div>
+<p>The vertical bar indicates a choice between <strong>A</strong> and <strong>b</strong>:</p>
+<div class="rail">
+<p><img src="_images/rail/05da61488a53fce0d926e1b7d42d33a879ce49dc.png"/><p>
+</div></section>
+<section id="repetition">
+<h4>Repetition<a class="headerlink" href="#repetition" title="Permalink to this headline">¶</a></h4>
+<p>Sometimes we want to do something more than once. We can indicate this by a
+loop-like structure:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{ A }
+</pre></div>
+</div>
+<p>This allows <strong>A</strong> to be found zero or more time. Here is the diagram:</p>
+<div class="rail">
+<p><img src="_images/rail/4b33de80b0daa04de9d0537f91968aca3441bb5a.png"/><p>
+</div><p>We can also call for at least one occurrence:</p>
+<blockquote>
+<div><p>A +</p>
+</div></blockquote>
+</section>
+<section id="optional-things">
+<h4>Optional Things<a class="headerlink" href="#optional-things" title="Permalink to this headline">¶</a></h4>
+<p>If it is possible for something to be found, or not, we inticate that that thing is optionsl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="n">A</span> <span class="p">]</span>
+</pre></div>
+</div>
+<div class="rail">
+<p><img src="_images/rail/66fc006f511eb839a6398f29a45769586dd0adde.png"/><p>
+</div></section>
+</section>
+</section>
+<section id="parser-generators">
+<h2>Parser Generators<a class="headerlink" href="#parser-generators" title="Permalink to this headline">¶</a></h2>
+<p>IN today’s world, it is common uo use a <em>parser generator</em> tool to create a parser from a language specification. This is a very mature technology and allows you to experiment with new languages.</p>
+<p>I have explored several Python capable parser generators in my teaching:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PLY (A <em>Python</em> implementation of some classic Unix compiler tools)</p></li>
+<li><p><a class="reference external" href="https://www.antlr.org/">ANTLR</a> A modern Java tool that can genrate a <em>Python</em> parser</p></li>
+<li><p><a class="reference external" href="https://tatsu.readthedocs.io/en/stable/index.html">TatSu</a> A pure <em>Python</em> parser generator</p></li>
+</ul>
+</div></blockquote>
+<p>In the end, I chose <a class="reference external" href="https://tatsu.readthedocs.io/en/stable/index.html">TatSu</a> for this project, because it keeps the language specification separate from the rest of the code, making it easier to create the specification and test the code (IMHO!)</p>
+<p>We will introduce the variation of <a class="reference external" href="https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form">EBNF</a> that <a class="reference external" href="https://tatsu.readthedocs.io/en/stable/index.html">TatSu</a> uses as we proceed in th parser development.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="02-tatsu-parser-dev.html" title="TatSu Parser Development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="contents.html" title="Math-Magik SCAD Parser"
+             >previous</a> |</li>
+        <li><a href="index.html">Home</a>&#160;|</li>
+        <li><a href="contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Building a Parser for <em>OpenSCAD</em></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Roie R. Black.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.2.
+    </div>
+  </body>
+</html>

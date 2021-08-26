@@ -1,0 +1,10 @@
+@@grammar :: scad
+@@comments ::	/\/\*.*\*\//
+@@eol_comments ::	/\/\/.*/
+
+integer
+	=
+	/[-]?\d+([eE]-?\d+)?/
+	;
+
+

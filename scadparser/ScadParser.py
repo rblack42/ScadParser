@@ -1,12 +1,12 @@
 import tatsu
 from pprint import pprint
-from ScadModel import ScadSemantics
+from .ScadModel import ScadSemantics
 
 
 class ScadParser(object):
 
     def __init__(self):
-        self.grammar = open('grammar/scad.tatsu').read()
+        self.grammar = open('scadparser/scad.ebnf').read()
         self.parser = tatsu.compile(self.grammar, asmodel=False)
 
     def parse(self, code):

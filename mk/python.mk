@@ -23,5 +23,5 @@ pydev:		## Install package in development mode
 
 .PHONY: run
 run:
-	python -m mmdesigner
+	python -m scadparser scad/model.scad
 

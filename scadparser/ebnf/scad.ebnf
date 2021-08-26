@@ -1,0 +1,65 @@
+@@grammar :: scad
+@@comments ::	/\/\*.*\*\//
+@@eol_comments ::	/\/\/.*/
+
+integer
+	=
+	/[-]?\d+([eE]-?\d+)?/
+	;
+
+real
+	=
+	/[-]?[0-9]*[\.][0-9]+([eE]-?[0-9]+)?/
+	;
+
+number
+    =
+    | float:real
+    | int:integer
+    ;
+
+identifier
+    =
+    /[$]?[a-zA-Z_]+[0-9]*/
+    ;
+
+expression
+	=
+	| addition
+	| subtraction
+	| term
+	;
+
+addition
+	=
+	left:expression op:'+' ~ right:term
+	;
+
+subtraction
+	=
+	left:expression op:'-' ~ right:term
+	;
+
+term
+	=
+	| multiplication
+	| division
+	| factor
+	;
+
+multiplication
+	=
+	left:term op:'*' ~ right:factor
+	;
+
+division
+	=
+	left:term op:'/' ~ right:factor
+	;
+
+factor
+	=
+	| '(' ~ expression ')'
+	| number
+	| identifier
+    ;

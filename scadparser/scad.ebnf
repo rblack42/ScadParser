@@ -1,0 +1,100 @@
+@@grammar :: scad
+@@eol_comments :: /\/\/.*?$/
+
+@@keyword :: include
+
+start
+	=
+	{ @:statement }+
+	;
+
+statement
+	=
+	| file_include
+	| declaration
+	;
+
+file_include
+	=
+	'include'
+	~
+	'<'
+	file: filename
+	'>'
+	;
+
+
+declaration
+	=
+	id:identifier
+	"="
+	~ value:expression
+	;
+
+expression
+	=
+	| addition
+	| subtraction
+	| term
+	;
+
+addition
+	=
+	left:expression op:'+' ~ right:term
+	;
+
+subtraction
+	=
+	left:expression op:'-' ~ right:term
+	;
+
+term
+	=
+	| multiplication
+	| division
+	| factor
+	;
+
+multiplication
+	=
+	left:term op:'*' ~ right:factor
+	;
+
+division
+	=
+	left:term op:'/' ~ right:factor
+	;
+
+factor
+	=
+	| '(' ~ expression ')'
+	| number
+	| identifier
+	;
+
+filename
+	=
+	/[^>]+/
+	;
+
+@name
+identifier
+	=
+	/[a-zA-Z_]+[0-9]*/
+	;
+
+number
+	=
+	| float:real
+	| int:integer
+	;
+
+integer
+	=
+	/[-]?[0-9]+([eE]-?[0-9]+)*/
+	;
+
+real
+	=
+	/[-]?[0-9]*[\.][0-9]+([eE]-?[0-9]+)?/
+	;

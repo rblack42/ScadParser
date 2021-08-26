@@ -1,9 +1,12 @@
+wheel
 tatsu
 regex
 colorama
 click
 sphinx
+sphinxcontrib-spelling
 pytest
 pytest-cov
 coverage
 flake8
+twine

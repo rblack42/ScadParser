@@ -46,7 +46,7 @@ ScadParser (v0.1.1)
     :alt: PyPI Wheel
     :target: https://pypi.org/project/scadparser
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/Rscadparser.svg
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/scadparser.svg
     :alt: Supported versions
     :target: https://pypi.org/project/scadparser
 
