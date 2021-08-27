@@ -187,9 +187,7 @@ followed to either accept or reject the input chink of code we process.</p>
 <p>There is one more rule in this set, one that is important:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">scadparser/ebnf/scad.ebnf</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>	<span class="p">;</span>
-
-<span class="n">number</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span>
     <span class="o">=</span>
     <span class="o">|</span> <span class="nb">float</span><span class="p">:</span><span class="n">real</span>
     <span class="o">|</span> <span class="nb">int</span><span class="p">:</span><span class="n">integer</span>
@@ -215,7 +213,7 @@ like operator precedence are handled by these rules.</p>
 <span class="linenos"> 7</span>    <span class="p">(</span><span class="s1">&#39;1*2&#39;</span><span class="p">,</span> <span class="s2">&quot;{&#39;left&#39;: {&#39;int&#39;: &#39;1&#39;}, &#39;op&#39;: &#39;*&#39;, &#39;right&#39;: {&#39;int&#39;: &#39;2&#39;}}&quot;</span><span class="p">),</span>
 <span class="linenos"> 8</span>    <span class="p">(</span><span class="s1">&#39;1.0+2*3&#39;</span><span class="p">,</span> <span class="s2">&quot;{&#39;left&#39;: {&#39;float&#39;: &#39;1.0&#39;}, &#39;op&#39;: &#39;+&#39;, &#39;right&#39;: {&#39;left&#39;: {&#39;int&#39;: &#39;2&#39;}, &#39;op&#39;: &#39;*&#39;, &#39;right&#39;: {&#39;int&#39;: &#39;3&#39;}}}&quot;</span><span class="p">)</span>
 <span class="linenos"> 9</span><span class="p">])</span>
-<span class="linenos">10</span><span class="k">def</span> <span class="nf">test_expression</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos">10</span><span class="k">def</span> <span class="nf">test_expressions</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="linenos">11</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;expression&#39;</span><span class="p">)</span>
 <span class="linenos">12</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
 <span class="linenos">13</span>

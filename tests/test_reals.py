@@ -6,6 +6,6 @@ import pytest
     ('123.45e02', "123.45e02"),
     ('123.0e-2', "123.0e-2")
 ])
-def test_number(scadparser, t, e):
+def test_reals(scadparser, t, e):
     ast = scadparser.parse(t, start="real")
     assert str(ast) == e

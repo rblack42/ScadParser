@@ -2,6 +2,8 @@
 @@comments ::	/\/\*.*\*\//
 @@eol_comments ::	/\/\/.*/
 
+@@keyword :: include
+
 integer
 	=
 	/[-]?\d+([eE]-?\d+)?/
@@ -79,11 +81,11 @@ start
 
 statement
 	=
-	| file_include
+	| fileinclude
 	| declaration
 	;
 
-file_include
+fileinclude
 	=
 	'include'
 	~

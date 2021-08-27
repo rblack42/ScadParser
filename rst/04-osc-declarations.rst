@@ -12,7 +12,7 @@ a simple form:
 The rule that provides this new grammar form is simple  as well:
 
 ..	literalinclude::	../scadparser/ebnf/scad.ebnf
-	:lines: 67-73
+	:lines: 69-75
 	:caption: scadparser/ebnf/scad.ebnf
 
 There is a new notation in this rule. The **~** symbol tells TatSu_ to continue
@@ -39,7 +39,7 @@ need a top-level rule that begins our parsing. Traditionally, this rule is
 named **start** and it is placed at the top of our EBNF_ file.
 
 ..	literalinclude::	../scadparser/ebnf/scad.ebnf
-	:lines: 67-73
+	:lines: 77-100
 	:caption: scadparser/ebnf/scad.ebnf
 
 There are a few more rules here, which will be needed in our next section.

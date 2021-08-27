@@ -138,7 +138,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <p>Read time: 4.9 minutes (494 words)</p>
+  <p>Read time: 4.9 minutes (493 words)</p>
 <section id="tatsu-parser-development">
 <h1>TatSu Parser Development<a class="headerlink" href="#tatsu-parser-development" title="Permalink to this headline">¶</a></h1>
 <p>To generate a parser for the <em>OpenSCAD</em> language using <a class="reference external" href="https://tatsu.readthedocs.io/en/stable/index.html">TatSu</a>, we need to start off
@@ -159,10 +159,10 @@ by writing a language specification using a variation of <a class="reference ext
 </pre></div>
 </div>
 </div>
-<p>Here, we define a name for the language <em>grammar</em>, and set up the geberated
+<p>Here, we define a name for the language <em>grammar</em>, and set up the generated
 parser to allow (and skip) C++ style comments. The only rule found in this
 startup file defines an integer number as a sequence of digits, possibly
-allowing for an exponent using the scientific stype notation. The pattenr shown
+allowing for an exponent using the scientific type notation. The pattern shown
 here is a standard one using <em>regular expressions</em> in <em>Python</em>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -171,7 +171,8 @@ of the ebnf- we produce and use in tests. In normal application
 development, we simple add lines to a single 88scad.ebnf fle and ditch the
 numbers.</p>
 </div>
-<p>Here is a simple test showing how we use this grammar and generate a parser for our extremely simple language:</p>
+<p>Here is a simple test showing how we use this grammar and generate a parser for
+our extremely simple language:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">sandbox/step01.py</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">tatsu</span>
@@ -217,7 +218,7 @@ misspelled) a test. Also, I created a <strong>scad.ebnf</strong> file which will
 <span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;123e02&#39;</span><span class="p">,</span> <span class="s2">&quot;123e02&quot;</span><span class="p">),</span>
 <span class="linenos"> 7</span>    <span class="p">(</span><span class="s1">&#39;123e-2&#39;</span><span class="p">,</span> <span class="s2">&quot;123e-2&quot;</span><span class="p">)</span>
 <span class="linenos"> 8</span><span class="p">])</span>
-<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_integers</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="linenos">10</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;integer&quot;</span><span class="p">)</span>
 <span class="linenos">11</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
 </pre></div>
@@ -287,7 +288,7 @@ WARNING: Failed to generate report: No data to report.
 <section id="adding-real-numbers">
 <h2>Adding Real Numbers<a class="headerlink" href="#adding-real-numbers" title="Permalink to this headline">¶</a></h2>
 <p>Now that we can process integers, let’s add a rul that accepts real numbers as
-well. This one is similar to the 8integer8 rule, bu it allows a decimal point;</p>
+well. This one is similar to the <em>integer</em> rule, bu it allows a decimal point;</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">scadparser/ebnf/scad02.ebnf</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>@@grammar :: scad
@@ -317,7 +318,7 @@ well. This one is similar to the 8integer8 rule, bu it allows a decimal point;</
 <span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;123.45e02&#39;</span><span class="p">,</span> <span class="s2">&quot;123.45e02&quot;</span><span class="p">),</span>
 <span class="linenos"> 7</span>    <span class="p">(</span><span class="s1">&#39;123.0e-2&#39;</span><span class="p">,</span> <span class="s2">&quot;123.0e-2&quot;</span><span class="p">)</span>
 <span class="linenos"> 8</span><span class="p">])</span>
-<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos"> 9</span><span class="k">def</span> <span class="nf">test_reals</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="linenos">10</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;real&quot;</span><span class="p">)</span>
 <span class="linenos">11</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
 </pre></div>
@@ -360,10 +361,10 @@ this documentation.</p>
 <section id="identifiers">
 <h2>Identifiers<a class="headerlink" href="#identifiers" title="Permalink to this headline">¶</a></h2>
 <p>We will be naming things in our design work, and <em>OpenSCAD</em> has some rules on names.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span>
-    <span class="o">=</span>
-    <span class="o">|</span> <span class="nb">float</span><span class="p">:</span><span class="n">real</span>
-    <span class="o">|</span> <span class="nb">int</span><span class="p">:</span><span class="n">integer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>identifier
+    =
+    /[$]?[a-zA-Z_]+[0-9]*/
+    ;
 </pre></div>
 </div>
 <p>This new rule allows names that start with a dollar sign, but those names are reserved for internal work by <em>OpenSCAD</em>. Some strange names are allowed as well, as we will see in our next test code:</p>
@@ -376,7 +377,7 @@ this documentation.</p>
 <span class="linenos"> 5</span>    <span class="p">(</span><span class="s1">&#39;_0&#39;</span><span class="p">,</span> <span class="s2">&quot;_0&quot;</span><span class="p">),</span>
 <span class="linenos"> 6</span>    <span class="p">(</span><span class="s1">&#39;max_span&#39;</span><span class="p">,</span> <span class="s2">&quot;max_span&quot;</span><span class="p">),</span>
 <span class="linenos"> 7</span><span class="p">])</span>
-<span class="linenos"> 8</span><span class="k">def</span> <span class="nf">test_number</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="linenos"> 8</span><span class="k">def</span> <span class="nf">test_identifiers</span><span class="p">(</span><span class="n">scadparser</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
 <span class="linenos"> 9</span>    <span class="n">ast</span> <span class="o">=</span> <span class="n">scadparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;identifier&quot;</span><span class="p">)</span>
 <span class="linenos">10</span>    <span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span> <span class="o">==</span> <span class="n">e</span>
 </pre></div>

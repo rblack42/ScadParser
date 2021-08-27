@@ -10,10 +10,10 @@ Here is our starting point:
     :linenos:
     :caption: scad.ebnf
 
-Here, we define a name for the language *grammar*, and set up the geberated
+Here, we define a name for the language *grammar*, and set up the generated
 parser to allow (and skip) C++ style comments. The only rule found in this
 startup file defines an integer number as a sequence of digits, possibly
-allowing for an exponent using the scientific stype notation. The pattenr shown
+allowing for an exponent using the scientific type notation. The pattern shown
 here is a standard one using *regular expressions* in |PY|.
 
 ..  note::
@@ -23,7 +23,8 @@ here is a standard one using *regular expressions* in |PY|.
     development, we simple add lines to a single 88scad.ebnf fle and ditch the
     numbers.
 
-Here is a simple test showing how we use this grammar and generate a parser for our extremely simple language:
+Here is a simple test showing how we use this grammar and generate a parser for
+our extremely simple language:
 
 ..  literalinclude::    ../sandbox/step01.py
     :linenos:
@@ -82,7 +83,7 @@ Adding Real Numbers
 *******************
 
 Now that we can process integers, let's add a rul that accepts real numbers as
-well. This one is similar to the 8integer8 rule, bu it allows a decimal point;
+well. This one is similar to the *integer* rule, bu it allows a decimal point;
 
 ..  literalinclude::    ../scadparser/ebnf/scad02.ebnf
     :linenos:
@@ -113,7 +114,7 @@ Identifiers
 We will be naming things in our design work, and |OSC| has some rules on names.
 
 ..  literalinclude::    ../scadparser/ebnf/scad.ebnf
-    :lines: 15-18
+    :lines: 23-26
 
 This new rule allows names that start with a dollar sign, but those names are reserved for internal work by |OSC|. Some strange names are allowed as well, as we will see in our next test code:
 

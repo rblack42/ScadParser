@@ -1,0 +1,116 @@
+↙start ~1:1
+// model.scad
+↙statement↙start ~2:1
+include <constraints.scad>
+↙fileinclude↙statement↙start ~2:1
+include <constraints.scad>
+≡'include' 
+ <constraints.scad>
+≡'<' 
+constraints.scad>
+↙filename↙fileinclude↙statement↙start ~2:10
+constraints.scad>
+≡'constraints.scad' /[^>]+/
+>
+≡filename↙fileinclude↙statement↙start ~2:26
+>
+≡'>' 
+[31m[1m≢fileinclude↙statement↙start ~2:1[2m[22m
+include <constraints.scad>[0m
+[31m[1m≢statement↙start ~2:1[2m[22m
+include <constraints.scad>[0m
+[31m[1m≢start ~1:1[2m[22m
+// model.scad[0m
+Traceback (most recent call last):
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 240, in parse
+    result = rule()
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 845, in parse
+    result = self._parse_rhs(ctx, self.exp)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 858, in _parse_rhs
+    result = ctx._call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 582, in _call
+    result = self._recursive_call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 610, in _recursive_call
+    return self._invoke_rule(ruleinfo, self.memokey)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 659, in _invoke_rule
+    ruleinfo.impl(self)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 570, in parse
+    return ctx._positive_closure(lambda: self.exp.parse(ctx))
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 851, in _positive_closure
+    block()
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 570, in <lambda>
+    return ctx._positive_closure(lambda: self.exp.parse(ctx))
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 723, in parse
+    value = self.exp.parse(ctx)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 789, in parse
+    return rule()
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 845, in parse
+    result = self._parse_rhs(ctx, self.exp)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 858, in _parse_rhs
+    result = ctx._call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 582, in _call
+    result = self._recursive_call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 610, in _recursive_call
+    return self._invoke_rule(ruleinfo, self.memokey)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 659, in _invoke_rule
+    ruleinfo.impl(self)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 495, in parse
+    return ctx.last_node
+  File "/usr/local/Cellar/python@3.9/3.9.6/Frameworks/Python.framework/Versions/3.9/lib/python3.9/contextlib.py", line 135, in __exit__
+    self.gen.throw(type, value, traceback)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 753, in _option
+    raise FailedCut(e)
+tatsu.exceptions.FailedCut: (1:1) Expecting <integer> :
+// constraints.scad
+^
+integer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rblack/_dev/ScadParser/sandbox/step03.py", line 13, in <module>
+    test()
+  File "/Users/rblack/_dev/ScadParser/sandbox/step03.py", line 9, in test
+    ast = parser.parse(code, start='start', semantics=ScadSemantics(), trace=True)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 1129, in parse
+    return ctx.parse(
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 244, in parse
+    raise self._furthest_exception
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 747, in _option
+    yield
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 494, in parse
+    ctx.last_node = o.parse(ctx)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 789, in parse
+    return rule()
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 845, in parse
+    result = self._parse_rhs(ctx, self.exp)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 858, in _parse_rhs
+    result = ctx._call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 582, in _call
+    result = self._recursive_call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 610, in _recursive_call
+    return self._invoke_rule(ruleinfo, self.memokey)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 661, in _invoke_rule
+    node = self._invoke_semantic_rule(ruleinfo, node)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 686, in _invoke_semantic_rule
+    node = semantic_rule(node, *(rule.params or ()), **(rule.kwparams or {}))
+  File "/Users/rblack/_dev/ScadParser/scadparser/ScadSemantics.py", line 15, in fileinclude
+    ast = parser.parse(prog,
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 1129, in parse
+    return ctx.parse(
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 247, in parse
+    raise self._furthest_exception
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 240, in parse
+    result = rule()
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 845, in parse
+    result = self._parse_rhs(ctx, self.exp)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/grammars.py", line 858, in _parse_rhs
+    result = ctx._call(ruleinfo)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 593, in _call
+    self._error('Expecting <%s>' % ruleinfo.name)
+  File "/Users/rblack/_dev/ScadParser/.direnv/python-3.9.6/lib/python3.9/site-packages/tatsu/contexts.py", line 519, in _error
+    raise self._make_exception(item, exclass=exclass)
+tatsu.exceptions.FailedParse: (1:1) Expecting <integer> :
+// constraints.scad
+^
+integer

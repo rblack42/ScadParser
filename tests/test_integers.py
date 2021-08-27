@@ -6,6 +6,6 @@ import pytest
     ('123e02', "123e02"),
     ('123e-2', "123e-2")
 ])
-def test_number(scadparser, t, e):
+def test_integers(scadparser, t, e):
     ast = scadparser.parse(t, start="integer")
     assert str(ast) == e
