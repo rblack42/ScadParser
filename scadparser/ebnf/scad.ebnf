@@ -63,3 +63,37 @@ factor
 	| number
 	| identifier
     ;
+
+declaration
+    =
+    id:identifier
+    '='
+    ~ value:expression
+    ';'
+    ;
+
+start
+    =
+	{ @:statement }+
+	;
+
+statement
+	=
+	| file_include
+	| declaration
+	;
+
+file_include
+	=
+	'include'
+	~
+	'<'
+	file: filename
+	'>'
+	;
+
+filename
+	=
+	/[^>]+/
+	;
+
